@@ -1514,6 +1514,7 @@ name = "weather-llm"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "nbconvert" },
     { name = "notebook" },
     { name = "ollama" },
     { name = "requests" },
@@ -1521,6 +1522,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "nbconvert", specifier = ">=7.17.1" },
     { name = "notebook", specifier = ">=7.6.2" },
     { name = "ollama", specifier = ">=0.6.2" },
     { name = "requests", specifier = ">=2.34.2" },
