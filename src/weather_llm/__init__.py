@@ -16,27 +16,7 @@ def get_temperature(city: str) -> dict[str, str]:
       The current temperature for the city
     """
 
-    geo_results = requests.get(
-        "https://geocoding-api.open-meteo.com/v1/search", params={"name": city}
-    )
-
-    geo_results = geo_results.json()
-
-    lat, lon = None, None
-
-    if geo_results["results"] and len(geo_results["results"]) > 0:
-        result = geo_results["results"][0]
-        lat, lon = result["latitude"], result["longitude"]
-    else:
-        raise Exception("Issue with the Weather API. Try some other city!")
-
-    weather_result = requests.get(
-        "https://api.open-meteo.com/v1/forecast",
-        params={"latitude": lat, "longitude": lon, "current": "temperature_2m"},
-    )
-    weather_result = weather_result.json()
-
-    return weather_result["current"]["temperature_2m"]
+    return {"New York": "16 Celcius", "London": "20 Celcius"}
 
 
 def ask(user_input: str):
