@@ -3,6 +3,8 @@ from typing import Any
 
 from ollama import chat
 
+_MODEL = "qwen3"
+
 
 def get_temperature(city: str) -> dict[str, str]:
     """Get the current temperature for a city
@@ -56,7 +58,7 @@ def ask(user_input: str):
 
     # pass functions directly as tools in the tools list or as a JSON schema
     response = chat(
-        model="qwen3", messages=messages, tools=[get_temperature], think=True
+        model=_MODEL, messages=messages, tools=[get_temperature], think=True
     )
 
     messages.append(response.message)
@@ -75,7 +77,7 @@ def ask(user_input: str):
         )
 
         final_response = chat(
-            model="qwen3", messages=messages, tools=[get_temperature], think=True
+            model=_MODEL, messages=messages, tools=[get_temperature], think=True
         )
         print(final_response.message.content)
 
