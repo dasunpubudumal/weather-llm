@@ -1,0 +1,21 @@
+[project]
+name = "weather-llm"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Dasun Pubudumal", email = "pubudumald@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "notebook>=7.6.2",
+    "ollama>=0.6.2",
+    "requests>=2.34.2",
+]
+
+[project.scripts]
+weather-llm = "weather_llm:main"
+
+[build-system]
+requires = ["uv_build>=0.12.16,<0.13.0"]
+build-backend = "uv_build"
