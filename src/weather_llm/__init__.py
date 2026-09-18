@@ -20,6 +20,37 @@ def get_temperature(city: str) -> str:
     return temperatures.get(city, "Unknown")
 
 
+def ask(user_input: str):
+    messages: Any = [{"role": "user", "content": user_input}]
+
+    print("Thinking..")
+
+    # pass functions directly as tools in the tools list or as a JSON schema
+    response = chat(
+        model="qwen3", messages=messages, tools=[get_temperature], think=True
+    )
+
+    messages.append(response.message)
+    if response.message.tool_calls:
+        # only recommended for models which only return a single tool call
+        call = response.message.tool_calls[0]
+        result = get_temperature(**call.function.arguments)
+        print("Running the toolchain..")
+        # add the tool result to the messages
+        messages.append(
+            {
+                "role": "tool",
+                "tool_name": call.function.name,
+                "content": str(result),
+            }
+        )
+
+        final_response = chat(
+            model="qwen3", messages=messages, tools=[get_temperature], think=True
+        )
+        print(final_response.message.content)
+
+
 def main() -> None:
 
     while True:
@@ -30,31 +61,4 @@ def main() -> None:
             print("Exiting..")
             break
 
-        messages: Any = [{"role": "user", "content": user_input}]
-
-        print("Thinking..")
-
-        # pass functions directly as tools in the tools list or as a JSON schema
-        response = chat(
-            model="qwen3", messages=messages, tools=[get_temperature], think=True
-        )
-
-        messages.append(response.message)
-        if response.message.tool_calls:
-            # only recommended for models which only return a single tool call
-            call = response.message.tool_calls[0]
-            result = get_temperature(**call.function.arguments)
-            print("Running the toolchain..")
-            # add the tool result to the messages
-            messages.append(
-                {
-                    "role": "tool",
-                    "tool_name": call.function.name,
-                    "content": str(result),
-                }
-            )
-
-            final_response = chat(
-                model="qwen3", messages=messages, tools=[get_temperature], think=True
-            )
-            print(final_response.message.content)
+        ask(user_input)
