@@ -1,9 +1,10 @@
+import requests
 from typing import Any
 
 from ollama import chat
 
 
-def get_temperature(city: str) -> str:
+def get_temperature(city: str) -> dict[str, str]:
     """Get the current temperature for a city
 
     Args:
@@ -12,12 +13,59 @@ def get_temperature(city: str) -> str:
     Returns:
       The current temperature for the city
     """
-    temperatures = {
-        "New York": "22°C",
-        "London": "15°C",
-        "Tokyo": "18°C",
-    }
-    return temperatures.get(city, "Unknown")
+
+    geo_results = requests.get(
+        "https://geocoding-api.open-meteo.com/v1/search", params={"name": city}
+    )
+
+    geo_results = geo_results.json()
+
+    lat, lon = None, None
+
+    if geo_results["results"] and len(geo_results["results"]) > 0:
+        result = geo_results["results"][0]
+        lat, lon = result["latitude"], result["longitude"]
+    else:
+        raise Exception("Issue with the Weather API. Try some other city!")
+
+    weather_result = requests.get(
+        "https://api.open-meteo.com/v1/forecast",
+        params={"latitude": lat, "longitude": lon, "current": "temperature_2m"},
+    )
+    weather_result = weather_result.json()
+
+    return weather_result["current"]["temperature_2m"]
+
+
+def ask(user_input: str):
+    messages: Any = [{"role": "user", "content": user_input}]
+
+    print("Thinking..")
+
+    # pass functions directly as tools in the tools list or as a JSON schema
+    response = chat(
+        model="qwen3", messages=messages, tools=[get_temperature], think=True
+    )
+
+    messages.append(response.message)
+    if response.message.tool_calls:
+        # only recommended for models which only return a single tool call
+        call = response.message.tool_calls[0]
+        result = get_temperature(**call.function.arguments)
+        print("Running the toolchain..")
+        # add the tool result to the messages
+        messages.append(
+            {
+                "role": "tool",
+                "tool_name": call.function.name,
+                "content": str(result),
+            }
+        )
+
+        final_response = chat(
+            model="qwen3", messages=messages, tools=[get_temperature], think=True
+        )
+        print(final_response.message.content)
 
 
 def main() -> None:
@@ -30,31 +78,4 @@ def main() -> None:
             print("Exiting..")
             break
 
-        messages: Any = [{"role": "user", "content": user_input}]
-
-        print("Thinking..")
-
-        # pass functions directly as tools in the tools list or as a JSON schema
-        response = chat(
-            model="qwen3", messages=messages, tools=[get_temperature], think=True
-        )
-
-        messages.append(response.message)
-        if response.message.tool_calls:
-            # only recommended for models which only return a single tool call
-            call = response.message.tool_calls[0]
-            result = get_temperature(**call.function.arguments)
-            print("Running the toolchain..")
-            # add the tool result to the messages
-            messages.append(
-                {
-                    "role": "tool",
-                    "tool_name": call.function.name,
-                    "content": str(result),
-                }
-            )
-
-            final_response = chat(
-                model="qwen3", messages=messages, tools=[get_temperature], think=True
-            )
-            print(final_response.message.content)
+        ask(user_input)
