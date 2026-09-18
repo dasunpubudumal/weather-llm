@@ -1,0 +1,55 @@
+<div style="position: relative; width: 100%; height: 320px;">
+  <canvas id="neovimChart" role="img" aria-label="Line chart showing difficulty of learning neovim over time: starts moderate, rises sharply to a peak around week 1, then drops quickly and levels off low by month two.">Difficulty over time: Day 1: 4, Day 3: 7, Week 1: 9 (peak), Week 2: 6, Week 3: 3, Month 1: 1.5, Month 2: 1</canvas>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const labels = ['Day 1','Day 3','Week 1','Week 2','Week 3','Month 1','Month 2'];
+const data = [4, 7, 9, 6, 3, 1.5, 1];
+const peakIndex = 2;
+
+new Chart(document.getElementById('neovimChart'), {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      data: data,
+      borderColor: '#2a78d6',
+      backgroundColor: 'rgba(42,120,214,0.1)',
+      borderWidth: 2,
+      pointRadius: labels.map((_, i) => i === peakIndex ? 6 : 3),
+      pointBackgroundColor: labels.map((_, i) => i === peakIndex ? '#eb6834' : '#2a78d6'),
+      pointBorderColor: '#fcfcfb',
+      pointBorderWidth: 1.5,
+      fill: true,
+      tension: 0.35,
+      cubicInterpolationMode: 'monotone'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => 'Difficulty: ' + ctx.parsed.y + '/10'
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 0,
+        max: 10,
+        title: { display: true, text: 'Difficulty / frustration', color: '#898781', font: { size: 12 } },
+        grid: { color: '#e1e0d9' },
+        ticks: { color: '#898781', stepSize: 2 }
+      },
+      x: {
+        title: { display: true, text: 'Time spent learning neovim', color: '#898781', font: { size: 12 } },
+        grid: { display: false },
+        ticks: { color: '#898781' }
+      }
+    }
+  }
+});
+</script>
