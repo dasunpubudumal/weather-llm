@@ -1,4 +1,3 @@
-
 # NeoVim & LazyVim: A Practical Introduction
 
 This notebook walks through five things every newcomer should understand before adopting NeoVim as a daily editor:
@@ -262,92 +261,8 @@ Understanding what Neovim is, is good and all, but it serves no purpose if the p
 
 ### The neovim learning curve
 
-Roughly, this is what the first two months felt like — run the cell below to see it.
 
-
-```python
-from html import escape
-from pathlib import Path
-
-from IPython.display import HTML, display
-
-# The chart is a Chart.js page; markdown cells strip <script>, so render it inside
-# an iframe, which gets its own browsing context and therefore runs the script.
-chart = Path("neovim_learning_curve.html").read_text()
-
-display(
-    HTML(
-        f'<iframe srcdoc="{escape(chart, quote=True)}" '
-        'style="width: 100%; height: 360px; border: 0;" '
-        'sandbox="allow-scripts"></iframe>'
-    )
-)
-```
-
-    /Users/dp27/Documents/Learning/weather-llm/.venv/lib/python3.14/site-packages/IPython/core/display.py:448: UserWarning: Consider using IPython.display.IFrame instead
-      warnings.warn("Consider using IPython.display.IFrame instead")
-
-
-
-<iframe srcdoc="&lt;div style=&quot;position: relative; width: 100%; height: 320px;&quot;&gt;
-  &lt;canvas id=&quot;neovimChart&quot; role=&quot;img&quot; aria-label=&quot;Line chart showing difficulty of learning neovim over time: starts moderate, rises sharply to a peak around week 1, then drops quickly and levels off low by month two.&quot;&gt;Difficulty over time: Day 1: 4, Day 3: 7, Week 1: 9 (peak), Week 2: 6, Week 3: 3, Month 1: 1.5, Month 2: 1&lt;/canvas&gt;
-&lt;/div&gt;
-&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-const labels = [&#x27;Day 1&#x27;,&#x27;Day 3&#x27;,&#x27;Week 1&#x27;,&#x27;Week 2&#x27;,&#x27;Week 3&#x27;,&#x27;Month 1&#x27;,&#x27;Month 2&#x27;];
-const data = [4, 7, 9, 6, 3, 1.5, 1];
-const peakIndex = 2;
-
-new Chart(document.getElementById(&#x27;neovimChart&#x27;), {
-  type: &#x27;line&#x27;,
-  data: {
-    labels: labels,
-    datasets: [{
-      data: data,
-      borderColor: &#x27;#2a78d6&#x27;,
-      backgroundColor: &#x27;rgba(42,120,214,0.1)&#x27;,
-      borderWidth: 2,
-      pointRadius: labels.map((_, i) =&gt; i === peakIndex ? 6 : 3),
-      pointBackgroundColor: labels.map((_, i) =&gt; i === peakIndex ? &#x27;#eb6834&#x27; : &#x27;#2a78d6&#x27;),
-      pointBorderColor: &#x27;#fcfcfb&#x27;,
-      pointBorderWidth: 1.5,
-      fill: true,
-      tension: 0.35,
-      cubicInterpolationMode: &#x27;monotone&#x27;
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: (ctx) =&gt; &#x27;Difficulty: &#x27; + ctx.parsed.y + &#x27;/10&#x27;
-        }
-      }
-    },
-    scales: {
-      y: {
-        min: 0,
-        max: 10,
-        title: { display: true, text: &#x27;Difficulty / frustration&#x27;, color: &#x27;#898781&#x27;, font: { size: 12 } },
-        grid: { color: &#x27;#e1e0d9&#x27; },
-        ticks: { color: &#x27;#898781&#x27;, stepSize: 2 }
-      },
-      x: {
-        title: { display: true, text: &#x27;Time spent learning neovim&#x27;, color: &#x27;#898781&#x27;, font: { size: 12 } },
-        grid: { display: false },
-        ticks: { color: &#x27;#898781&#x27; }
-      }
-    }
-  }
-});
-&lt;/script&gt;
-" style="width: 100%; height: 360px; border: 0;" sandbox="allow-scripts"></iframe>
-
-
-So, I've developed a small exercise that:
+I've developed a small exercise that:
 
 1. Is fun,
 2. Lets you navigate around neovim, and hopefully figure out the configuration you need.
