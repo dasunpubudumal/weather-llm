@@ -427,11 +427,6 @@ docker compose down              # stop and remove the containers (keeps the dow
 docker compose down -v           # also delete the model volume (you will re-download ~5GB)
 ```
 
-### Notes
-
-- **Using a different model:** change `_MODEL` in `src/weather_llm/__init__.py` and the model name in the `model-pull` entrypoint in `compose.yaml`.
-- **GPU acceleration:** uncomment the `deploy` block under the `ollama` service in `compose.yaml`. This needs an NVIDIA GPU and the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html). Without it, Ollama runs on the CPU, which works but is slower.
-- **Permission denied on the Docker socket:** add your user to the `docker` group (`sudo usermod -aG docker $USER`, then log out and back in), or prefix the commands with `sudo`.
 
 ## Manual set up without Docker
 
