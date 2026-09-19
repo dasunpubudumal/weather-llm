@@ -372,6 +372,8 @@ After updating this function, you can run `uv run weather-llm`, and ask the weat
 
 ## Running with Docker
 
+First, clone the repository; you can clone it by running `git clone https://github.com/dasunpubudumal/weather-llm.git`, and then `cd` into the `weather-llm` directory.
+
 If you'd rather not install `ollama` and `uv` on your machine, you can run everything in containers. You only need [Docker](https://docs.docker.com/get-docker/) with the Compose plugin.
 
 The `compose.yaml` file defines four services:
