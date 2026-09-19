@@ -31,7 +31,26 @@ def ask(user_input: str):
     Args:
         user_input: The natural-language question or instruction from the user.
     """
-    messages: Any = [{"role": "user", "content": user_input}]
+
+    PROMPT = f"""
+    You are a weather specialist.
+
+    Given to you is a query provided by a user that needs to know
+    the weather of a certain city. The user expresses the requirement
+    in natural language.
+
+    User Prompt: {user_input}
+
+    Structure your answer to this format:
+
+    ===
+    User Input: {user_input}
+    Weather in degrees (celcius): <weather in celcius>
+    Conclusion: <A simple note for the user regarding the condition of the weather>
+    ===
+    """
+
+    messages: Any = [{"role": "user", "content": PROMPT}]
 
     print("Thinking..")
 
