@@ -58,7 +58,7 @@ Think of it the way you'd think of a Linux distribution versus the raw Linux ker
 
 Now, I have to say, it is not _impossible_ to first start out with a raw Neovim installation. When I first started out NeoVim, I started out with a fresh installation. But it took months of tinkering to figure out the correct setup (themes, keybindings, plugins, and some other tricks). It was a wonderful journey - one that I am proud of looking back - but it took weeks of configuration, research and fiddling with dotfiles. How _you_ configure Neovim is a subjective choice, and I know many people who defend their Neovim setup to death (I myself being one of them). But, as far as I have seen it, many people start out with Neovim from scratch, tinker with it weeks on end, and come up with a configuration that is _very_ close to LazyVim. The experience of doing that is golden - and I always encourage people to go on that journey - but for the scope of this tutorial, we'll start ourselves with LazyVim. Starting out with LazyVim **does not** mean that you are missing _everything_. You will still have to learn - and get used to - all the motions, key bindings and all the good stuff; you'd just be missing out on the fun times you get to do reading other people's configs.
 
-![img](./img-1.png)
+![img](./image-1.png)
 
 The image above is how my coding setup looks. I will usually have three Tmux windows:
 

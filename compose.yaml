@@ -45,9 +45,6 @@ services:
     ports:
       # Bound to localhost only, since the token is disabled.
       - "127.0.0.1:8888:8888"
-    environment:
-      OLLAMA_HOST: http://ollama:11434
-      HOME: /tmp
     # Run as your own user so files saved from Jupyter aren't owned by root.
     # Set UID/GID in a .env file if yours aren't 1000.
     user: "${UID:-1000}:${GID:-1000}"
