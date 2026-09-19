@@ -1,4 +1,3 @@
-import requests
 from typing import Any
 
 from ollama import chat
