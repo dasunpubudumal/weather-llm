@@ -267,41 +267,6 @@ I've developed a small exercise that:
 1. Is fun,
 2. Lets you navigate around neovim, and hopefully figure out the configuration you need.
 
-## Getting the exercise set up
-
-First, clone the repository; you can clone it by running `git clone https://github.com/dasunpubudumal/weather-llm.git`. You will need a few things to run the agent.
-
-**Set up `ollama`**
-
-[Ollama](https://ollama.com/) is a really cool tool that lets you download and run models in your machine. You can set it up using the following command:
-
-```bash
-curl -fsSL https://ollama.com/install.sh | sh
-```
-
-This will ask for elevated access. So, **make sure you elevate the access before you run the command above**.
-
-After running the `curl`, please open a different terminal tab and run `ollama run qwen3`. This will download and run `qwen3` model which we will be using. It is roughly about ~5gigs.
-
-**Setting up the project**
-
-You will need [`uv`](https://docs.astral.sh/uv/) for installing the dependencies. Install `uv` with the following command:
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-`uv` is really fast.
-
-To install the dependencies, `cd` into the respository you've cloned, and run `uv sync`. It should download and install all the necessary dependencies.
-
-Running the project is easy as running the following command:
-
-```bash
-uv run weather-llm
-```
-When asked for a query, type a query like _"What is the weather in London?"_.
-
 ### What does the project do?
 
 An LLM is a Large Language Model that was trained with historic data. So, for example, if we ask the weather of a certain city, it would probably have historic data, but it definitely is missing the current data.
@@ -403,6 +368,8 @@ Nothing else needs changing.
 
 After updating this function, you can run `uv run weather-llm`, and ask the weather of any city!
 
+## Getting the exercise set up
+
 ## Running with Docker
 
 If you'd rather not install `ollama` and `uv` on your machine, you can run everything in containers. You only need [Docker](https://docs.docker.com/get-docker/) with the Compose plugin.
@@ -465,3 +432,39 @@ docker compose down -v           # also delete the model volume (you will re-dow
 - **Using a different model:** change `_MODEL` in `src/weather_llm/__init__.py` and the model name in the `model-pull` entrypoint in `compose.yaml`.
 - **GPU acceleration:** uncomment the `deploy` block under the `ollama` service in `compose.yaml`. This needs an NVIDIA GPU and the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html). Without it, Ollama runs on the CPU, which works but is slower.
 - **Permission denied on the Docker socket:** add your user to the `docker` group (`sudo usermod -aG docker $USER`, then log out and back in), or prefix the commands with `sudo`.
+
+## Manual set up without Docker
+
+First, clone the repository; you can clone it by running `git clone https://github.com/dasunpubudumal/weather-llm.git`. You will need a few things to run the agent.
+
+**Set up `ollama`**
+
+[Ollama](https://ollama.com/) is a really cool tool that lets you download and run models in your machine. You can set it up using the following command:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+This will ask for elevated access. So, **make sure you elevate the access before you run the command above**.
+
+After running the `curl`, please open a different terminal tab and run `ollama run qwen3`. This will download and run `qwen3` model which we will be using. It is roughly about ~5gigs.
+
+**Setting up the project**
+
+You will need [`uv`](https://docs.astral.sh/uv/) for installing the dependencies. Install `uv` with the following command:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+`uv` is really fast.
+
+To install the dependencies, `cd` into the respository you've cloned, and run `uv sync`. It should download and install all the necessary dependencies.
+
+Running the project is easy as running the following command:
+
+```bash
+uv run weather-llm
+```
+When asked for a query, type a query like _"What is the weather in London?"_.
+
