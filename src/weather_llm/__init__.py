@@ -41,6 +41,9 @@ def ask(user_input: str):
 
     User Prompt: {user_input}
 
+    You are supposed to find out the weather of the city that the user is 
+    prompting.
+
     Structure your answer to this format:
 
     ===
