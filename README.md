@@ -407,13 +407,14 @@ After updating this function, you can run `uv run weather-llm`, and ask the weat
 
 If you'd rather not install `ollama` and `uv` on your machine, you can run everything in containers. You only need [Docker](https://docs.docker.com/get-docker/) with the Compose plugin.
 
-The `compose.yaml` file defines three services:
+The `compose.yaml` file defines four services:
 
 | Service | What it does |
 |---|---|
 | `ollama` | Runs the Ollama server. Downloaded models are kept in a named volume (`ollama`), so they survive restarts. |
 | `model-pull` | One-shot job that downloads `qwen3` into the volume (~5GB on the first run, instant afterwards). |
 | `app` | Builds this project from the `Dockerfile` and runs `weather-llm`, talking to the `ollama` service through `OLLAMA_HOST`. |
+| `notebook` | Runs Jupyter on <http://localhost:8888> with the project directory mounted, so you can open `notebook.ipynb`. |
 
 ### Run the agent
 
@@ -437,6 +438,18 @@ The source is copied into the image when it is built, so edits to your local fil
    ```
 
 Dependency layers are cached, so rebuilding after a code-only change takes a few seconds. If you add a dependency, run `uv add <package>` first so `pyproject.toml` and `uv.lock` are updated before you rebuild.
+
+### Run this notebook
+
+The compose file also has a `notebook` service that runs Jupyter, so you can read and run `notebook.ipynb` without installing anything locally:
+
+```bash
+docker compose up notebook
+```
+
+Then open <http://localhost:8888> (no token needed; the port is only exposed on `localhost`). The project directory is mounted into the container, so changes you save in Jupyter are written to your working copy. Files are created as UID/GID 1000 by default; if yours differ, put `UID=...` and `GID=...` in a `.env` file next to `compose.yaml`.
+
+The `notebook` service starts Ollama too, but does not pull the model; run `docker compose run --rm app` once (or `docker compose up model-pull`) if you haven't downloaded `qwen3` yet.
 
 ### Useful commands
 

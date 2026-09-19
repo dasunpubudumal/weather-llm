@@ -2,6 +2,7 @@ FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim
 
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
+    UV_PROJECT_ENVIRONMENT=/opt/venv \
     PYTHONUNBUFFERED=1
 
 WORKDIR /app
@@ -15,7 +16,8 @@ COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
-ENV PATH="/app/.venv/bin:$PATH"
+# The venv lives outside /app so the project directory can be bind-mounted over it.
+ENV PATH="/opt/venv/bin:$PATH"
 
 # The ollama client reads OLLAMA_HOST; compose points it at the ollama service.
 CMD ["weather-llm"]
