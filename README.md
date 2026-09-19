@@ -406,9 +406,9 @@ The source is copied into the image when it is built, so edits to your local fil
 
 Dependency layers are cached, so rebuilding after a code-only change takes a few seconds. If you add a dependency, run `uv add <package>` first so `pyproject.toml` and `uv.lock` are updated before you rebuild.
 
-### Run this notebook
+### Run the notebook
 
-The compose file also has a `notebook` service that runs Jupyter, so you can read and run `notebook.ipynb` without installing anything locally:
+The compose file also has a `notebook` service that runs Jupyter, so you can run `notebook.ipynb` without installing anything locally:
 
 ```bash
 docker compose up notebook
@@ -416,7 +416,7 @@ docker compose up notebook
 
 Then open <http://localhost:8888> (no token needed; the port is only exposed on `localhost`). The project directory is mounted into the container, so changes you save in Jupyter are written to your working copy. Files are created as UID/GID 1000 by default; if yours differ, put `UID=...` and `GID=...` in a `.env` file next to `compose.yaml`.
 
-The `notebook` service starts Ollama too, but does not pull the model; run `docker compose run --rm app` once (or `docker compose up model-pull`) if you haven't downloaded `qwen3` yet.
+Please note that the notebook is just a reference; it was written as a means of supplying some notes because - obviously - it is easy to forget the stuff we do in one session.
 
 ### Useful commands
 
