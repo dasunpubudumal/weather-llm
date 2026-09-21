@@ -2,7 +2,7 @@ from typing import Any
 
 from ollama import chat
 
-_MODEL = "qwen3"
+_MODEL = "qwen3:1.7b"
 
 
 def get_temperature(city: str) -> dict[str, str]:

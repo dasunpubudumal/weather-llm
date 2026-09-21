@@ -22,7 +22,7 @@ def ask(user_input: str) -> None:
 
     # pass functions directly as tools in the tools list or as a JSON schema
     response = chat(
-        model="qwen3", messages=messages, tools=[get_temperature], think=True
+        model="qwen3:1.7b", messages=messages, tools=[get_temperature], think=True
     )
 
     messages.append(response.message)
@@ -41,6 +41,6 @@ def ask(user_input: str) -> None:
         )
 
         final_response = chat(
-            model="qwen3", messages=messages, tools=[get_temperature], think=True
+            model="qwen3:1.7b", messages=messages, tools=[get_temperature], think=True
         )
         print(final_response.message.content)

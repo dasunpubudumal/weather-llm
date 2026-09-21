@@ -370,11 +370,19 @@ After updating this function, you can run `uv run weather-llm`, and ask the weat
 
 ## Getting the exercise set up
 
-## Running with Docker
+## Running with Podman
 
 First, clone the repository; you can clone it by running `git clone https://github.com/dasunpubudumal/weather-llm.git`, and then `cd` into the `weather-llm` directory.
 
-If you'd rather not install `ollama` and `uv` on your machine, you can run everything in containers. You only need [Docker](https://docs.docker.com/get-docker/) with the Compose plugin.
+If you'd rather not install `ollama` and `uv` on your machine, you can run everything in containers. You only need [Podman](https://podman.io/) with the Compose plugin (`podman-compose`).
+
+Before running any containers on macOS, initialise and start a Podman machine:
+
+```bash
+podman machine init
+podman machine set --memory 8192
+podman machine start
+```
 
 The `compose.yaml` file defines four services:
 
@@ -390,7 +398,7 @@ The `compose.yaml` file defines four services:
 The agent is an interactive prompt, so start it with `run` (not `up`):
 
 ```bash
-docker compose run --rm app
+podman compose --file compose.yaml run --rm app
 ```
 
 This starts Ollama, waits until `qwen3` is downloaded, and then drops you at the `Enter a query:` prompt. The first run takes a while because of the model download. Press enter on an empty query to exit.
@@ -403,7 +411,7 @@ The source is copied into the image when it is built, so edits to your local fil
 2. Rebuild the `app` image and run it:
 
    ```bash
-   docker compose run --rm --build app
+   podman compose --file compose.yaml run --rm --build app
    ```
 
 Dependency layers are cached, so rebuilding after a code-only change takes a few seconds. If you add a dependency, run `uv add <package>` first so `pyproject.toml` and `uv.lock` are updated before you rebuild.
@@ -413,7 +421,7 @@ Dependency layers are cached, so rebuilding after a code-only change takes a few
 The compose file also has a `notebook` service that runs Jupyter, so you can run `notebook.ipynb` without installing anything locally:
 
 ```bash
-docker compose up notebook
+podman compose --file compose.yaml up notebook
 ```
 
 Then open <http://localhost:8888> (no token needed; the port is only exposed on `localhost`). The project directory is mounted into the container, so changes you save in Jupyter are written to your working copy. Files are created as UID/GID 1000 by default; if yours differ, put `UID=...` and `GID=...` in a `.env` file next to `compose.yaml`.
@@ -423,10 +431,10 @@ Please note that the notebook is just a reference; it was written as a means of 
 ### Useful commands
 
 ```bash
-docker compose up -d ollama      # start only the Ollama server in the background
-docker compose logs -f ollama    # follow the Ollama logs
-docker compose down              # stop and remove the containers (keeps the downloaded model)
-docker compose down -v           # also delete the model volume (you will re-download ~5GB)
+podman compose --file compose.yaml up -d ollama      # start only the Ollama server in the background
+podman compose --file compose.yaml logs -f ollama    # follow the Ollama logs
+podman compose --file compose.yaml down              # stop and remove the containers (keeps the downloaded model)
+podman compose --file compose.yaml down -v           # also delete the model volume (you will re-download ~5GB)
 ```
 
 
